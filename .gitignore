@@ -9,3 +9,9 @@ rust/json-gen/target
 rust/json-gen/output
 rust/json-gen/schemas
 .DS_Store
+
+rust/bench/target
+rust/bench/Cargo.lock
+rust/Cargo.lock
+tools/metadata-cddl-checker/Cargo.lock
+tools/metadata-cddl-checker/target
