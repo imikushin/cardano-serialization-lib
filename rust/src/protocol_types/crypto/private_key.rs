@@ -1,5 +1,6 @@
 use crate::{Ed25519Signature, JsError, PublicKey, wasm_bindgen};
 use crate::impl_mockchain::key;
+#[cfg(feature = "random")]
 use rand_os::OsRng;
 use crate::chain_crypto::bech32::Bech32;
 
@@ -18,6 +19,7 @@ impl PrivateKey {
         self.0.to_public().into()
     }
 
+    #[cfg(feature = "random")]
     pub fn generate_ed25519() -> Result<PrivateKey, JsError> {
         OsRng::new()
             .map(crate::chain_crypto::SecretKey::<crate::chain_crypto::Ed25519>::generate)
@@ -26,6 +28,7 @@ impl PrivateKey {
             .map_err(|e| JsError::from_str(&format!("{}", e)))
     }
 
+    #[cfg(feature = "random")]
     pub fn generate_ed25519extended() -> Result<PrivateKey, JsError> {
         OsRng::new()
             .map(crate::chain_crypto::SecretKey::<crate::chain_crypto::Ed25519Extended>::generate)

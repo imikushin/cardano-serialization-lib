@@ -7,6 +7,7 @@ use crate::chain_crypto::sign::{
 
 use ed25519_bip32 as i;
 use ed25519_bip32::{XPrv, XPub, XPRV_SIZE, XPUB_SIZE};
+#[cfg(feature = "random")]
 use rand_os::rand_core::{CryptoRng, RngCore};
 
 /// Ed25519 BIP32 Signature algorithm
@@ -46,6 +47,7 @@ impl AsymmetricKey for Ed25519Bip32 {
 
     const SECRET_BECH32_HRP: &'static str = "xprv";
 
+    #[cfg(feature = "random")]
     fn generate<T: RngCore + CryptoRng>(mut rng: T) -> Self::Secret {
         let mut priv_bytes = [0u8; XPRV_SIZE];
         rng.fill_bytes(&mut priv_bytes);

@@ -5,6 +5,7 @@ use crate::chain_crypto::sign::{
     SignatureError, SigningAlgorithm, Verification, VerificationAlgorithm,
 };
 use cryptoxide::ed25519;
+#[cfg(feature = "random")]
 use rand_os::rand_core::{CryptoRng, RngCore};
 
 use ed25519_bip32::XPub;
@@ -70,6 +71,7 @@ impl AsymmetricKey for Ed25519 {
 
     const SECRET_BECH32_HRP: &'static str = "ed25519_sk";
 
+    #[cfg(feature = "random")]
     fn generate<T: RngCore + CryptoRng>(mut rng: T) -> Self::Secret {
         let mut priv_bytes = [0u8; ed25519::PRIVATE_KEY_LENGTH];
         rng.fill_bytes(&mut priv_bytes);

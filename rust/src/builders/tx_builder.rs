@@ -161,10 +161,12 @@ pub enum CoinSelectionStrategyCIP2 {
     /// Performs CIP2's Largest First ada-only selection. Will error if outputs contain non-ADA assets.
     LargestFirst,
     /// Performs CIP2's Random Improve ada-only selection. Will error if outputs contain non-ADA assets.
+    #[cfg(feature = "random")]
     RandomImprove,
     /// Same as LargestFirst, but before adding ADA, will insert by largest-first for each asset type.
     LargestFirstMultiAsset,
     /// Same as RandomImprove, but before adding ADA, will insert by random-improve for each asset type.
+    #[cfg(feature = "random")]
     RandomImproveMultiAsset,
 }
 
@@ -462,6 +464,7 @@ impl TransactionBuilder {
                     |value| Some(value.coin),
                 )?;
             }
+            #[cfg(feature = "random")]
             CoinSelectionStrategyCIP2::RandomImprove => {
                 if self
                     .outputs
@@ -533,6 +536,7 @@ impl TransactionBuilder {
                     |value| Some(value.coin),
                 )?;
             }
+            #[cfg(feature = "random")]
             CoinSelectionStrategyCIP2::RandomImproveMultiAsset => {
                 use rand::Rng;
                 let mut rng = rand::thread_rng();
@@ -635,6 +639,7 @@ impl TransactionBuilder {
         Ok(())
     }
 
+    #[cfg(feature = "random")]
     fn cip2_random_improve_by<F>(
         &mut self,
         available_inputs: &Vec<&TransactionUnspentOutput>,

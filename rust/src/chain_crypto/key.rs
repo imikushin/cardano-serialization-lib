@@ -1,5 +1,6 @@
 use crate::chain_crypto::bech32::{self, Bech32};
 use hex::FromHexError;
+#[cfg(feature = "random")]
 use rand_os::rand_core::{CryptoRng, RngCore};
 use std::fmt;
 use std::hash::Hash;
@@ -41,6 +42,7 @@ pub trait AsymmetricKey {
 
     const SECRET_BECH32_HRP: &'static str;
 
+    #[cfg(feature = "random")]
     fn generate<T: RngCore + CryptoRng>(rng: T) -> Self::Secret;
     fn compute_public(secret: &Self::Secret) -> <Self::PubAlg as AsymmetricPublicKey>::Public;
     fn secret_from_binary(data: &[u8]) -> Result<Self::Secret, SecretKeyError>;
@@ -66,6 +68,7 @@ impl<A: AsymmetricKey> KeyPair<A> {
     pub fn into_keys(self) -> (SecretKey<A>, PublicKey<A::PubAlg>) {
         (self.0, self.1)
     }
+    #[cfg(feature = "random")]
     pub fn generate<R: RngCore + CryptoRng>(rng: &mut R) -> Self {
         let sk = A::generate(rng);
         let pk = A::compute_public(&sk);
@@ -164,6 +167,7 @@ impl<A: AsymmetricKey> From<SecretKey<A>> for KeyPair<A> {
 }
 
 impl<A: AsymmetricKey> SecretKey<A> {
+    #[cfg(feature = "random")]
     pub fn generate<T: RngCore + CryptoRng>(rng: T) -> Self {
         SecretKey(A::generate(rng))
     }

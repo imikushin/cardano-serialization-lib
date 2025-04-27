@@ -7,6 +7,7 @@ use crate::chain_crypto as crypto;
 use crate::chain_crypto::{
     AsymmetricKey, AsymmetricPublicKey, SecretKey, SigningAlgorithm, VerificationAlgorithm,
 };
+#[cfg(feature = "random")]
 use rand_os::rand_core::{CryptoRng, RngCore};
 
 #[derive(Clone)]
@@ -16,6 +17,7 @@ pub enum EitherEd25519SecretKey {
 }
 
 impl EitherEd25519SecretKey {
+    #[cfg(feature = "random")]
     pub fn generate<R: RngCore + CryptoRng>(rng: R) -> Self {
         EitherEd25519SecretKey::Extended(SecretKey::generate(rng))
     }

@@ -20,6 +20,9 @@ property-test-api = []
 generic-serialization = []
 with-bench = []
 
+# make random stuff optional
+random = ["rand_os", "rand"]
+
 [lib]
 crate-type = ["cdylib", "rlib"]
 
@@ -40,7 +43,7 @@ num-integer = "0.1.45"
 # feature or this one
 clear_on_drop = { version = "0.2", features = ["no_cc"] }
 itertools = "0.10.1"
-rand = "0.8.4"
+rand = { version = "0.8.4", optional = true }
 schemars = "0.8.8"
 serde = { version = "1.0", features = ["derive"] }
 num-derive = "0.4.0"
@@ -49,17 +52,17 @@ num = "0.4.1"
 
 # non-wasm
 [target.'cfg(not(all(target_arch = "wasm32", not(target_os = "emscripten"))))'.dependencies]
-rand_os = "0.1"
+rand_os = { version = "0.1", optional = true }
 noop_proc_macro = "0.3.0"
-getrandom = "0.2.3"
+#getrandom = "0.2.3"
 
 # wasm
 [target.'cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))'.dependencies]
 serde-wasm-bindgen = "0.4.5"
 wasm-bindgen = "0.2.100"
-rand_os = { version = "0.1", features = ["wasm-bindgen"] }
+rand_os = { version = "0.1", features = ["wasm-bindgen"], optional = true }
 js-sys = "0.3.51"
-getrandom = { version = "0.2.3", features = ["js"] }
+#getrandom = { version = "0.2.3", features = ["js"] }
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
@@ -69,7 +72,7 @@ opt-level = "s"
 quickcheck = "0.9.2"
 quickcheck_macros = "0.9.1"
 rand_os = "0.1"
-rand_chacha = "0.1"
+#rand_chacha = "0.1"
 
 [build-dependencies]
 schemars = "0.8.8"

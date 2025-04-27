@@ -1,5 +1,6 @@
 use crate::*;
 use crate::impl_mockchain::key;
+#[cfg(feature = "random")]
 use rand_os::OsRng;
 use crate::chain_crypto::bech32::Bech32;
 
@@ -59,6 +60,7 @@ impl Bip32PrivateKey {
         buf.to_vec()
     }
 
+    #[cfg(feature = "random")]
     pub fn generate_ed25519_bip32() -> Result<Bip32PrivateKey, JsError> {
         OsRng::new()
             .map(crate::chain_crypto::SecretKey::<crate::chain_crypto::Ed25519Bip32>::generate)
